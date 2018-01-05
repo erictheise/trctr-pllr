@@ -1,0 +1,55 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+{% include 'head.html' %}
+  <body>
+    <div class="off-canvas-wrapper">
+      <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+        <!-- off-screen vertical menu for small-down -->
+        <div class="title-bar" data-responsive-toggle="widemenu" data-hide-for="medium">
+          <div class="title-bar-left">
+            <button class="menu-icon" type="button" data-open="offCanvas"></button>
+            <span class="title-bar-title">TRCTR-PLLR</span>
+          </div>
+        </div>
+        <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+          <button class="close-button" aria-label="Close menu" type="button" data-close>
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <ul class="vertical menu">
+            <li><a href="#">About</a></li>
+          </ul>
+        </div>
+
+        <!-- on-screen horizontal menu for medium-up -->
+        <header id="widemenu" class="site-header">
+          <div class="grid-x">
+            <div class="cell">
+              <div class="top-bar">
+                <div class="top-bar-left">TRCTR-PLLR</div>
+                <div class="top-bar-right">
+                  <ul class="dropdown menu" data-dropdown-menu>
+                    <li><a href="#">About</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="off-canvas-content" data-off-canvas-content>
+          <div class="grid-x">
+            <div class="cell">
+              <div class="page-content">
+  {% block content %}{% endblock %}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+{% include 'foot.html' %}
+{% include 'ga.html' %}
+  </body>
+</html>

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="#" method="get">
+<div class="grid-x grid-padding-x">
+  <div class="small-12 medium-3 cell">
+    <fieldset class="fieldset">
+      <legend>Observations</legend>
+      <label>
+        How many?
+        <input type="number" name="observations" value="10">
+      </label>
+    </fieldset>
+
+    <div class="vertical-radio-buttons">
+      <fieldset class="fieldset">
+        <legend>Output format</legend>
+          <div>
+            <span>
+              <input type="radio" name="format" value="geojson" id="geojson" required checked>
+              <label for="geojson">GeoJSON</label>
+            </span>
+          </div>
+          <div>
+            <span>
+              <input type="radio" name="format" value="csv" id="csv" disabled required>
+              <label for="csv">Comma delimited</label>
+            </span>
+          </div>
+          <div>
+            <span>
+              <input type="radio" name="format" value="tsv" id="tsv" disabled required>
+              <label for="tsv">Tab delimited</label>
+            </span>
+          </div>
+      </fieldset>
+    </div>
+
+  </div>
+
+  <div class="small-12 medium-4 cell">
+    <fieldset class="fieldset">
+      <legend>Properties</legend>
+      <p>
+       Leggings 3 wolf moon unicorn cliche cronut kombucha pitchfork mlkshk shabby chic selfies. Yr vaporware meggings migas bitters succulents occupy microdosing selfies chicharrones.
+      </p>
+      <p>
+        Umami YOLO pitchfork tbh sartorial. Everyday carry try-hard four loko, blue bottle chartreuse meggings kombucha tumblr fingerstache food truck sriracha fashion axe sartorial. Stumptown kickstarter bitters, Unicorn snackwave tbh polaroid iPhone bitters. Gastropub intelligentsia thundercats pabst, vinyl mlkshk cornhole paleo kickstarter deep v literally jean shorts.
+      </p>
+    </fieldset>
+
+    <button id="generate" class="hollow button float-center" type="submit">Generate</button>
+  </div>
+
+  <div class="small-12 medium-5 cell">
+    <fieldset class="fieldset">
+      <legend>Output</legend>
+      <textarea id="output" name="output" disabled wrap="off"></textarea>
+    </fieldset>
+  </div>
+</div>
+</form>
+
+<script>
+  $(document).ready(function () {
+    var
+      outputHeight,
+      windowHeight = window.innerHeight,
+      topBarHeight = parseFloat($('#widemenu').height()),
+      cellHeight = parseFloat($('.cell').height()),
+      fieldsetHeight = parseFloat($('.fieldset').css('margin-top')) + parseFloat($('.fieldset').css('padding-top')) + parseFloat($('.fieldset').css('padding-bottom') + parseFloat($('.fieldset').css('margin-bottom')))
+      ;
+    outputHeight = windowHeight - topBarHeight - 1.5 * cellHeight - fieldsetHeight;
+    $('#output').height(outputHeight);
+    $('#generate').on('click', function (e) {
+      e.preventDefault();
+      $('#output').empty();
+      var url = '/tracts?' + $('form').serialize();
+      $.get(url, function (data) {
+        $('#output').append(JSON.stringify(JSON.parse(data), undefined, 4));
+      })
+    })
+  })
+</script>
+{% endblock %}

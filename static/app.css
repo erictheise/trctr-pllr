@@ -1,0 +1,74 @@
+.vertical-radio-buttons div {
+  display: block;
+  padding: 0 0 5px 5px;
+  clear: both;
+}
+.vertical-radio-buttons span {
+  display: block;
+  padding-left: 20px;
+  cursor: inherit;
+}
+.vertical-radio-buttons input {
+  float: left;
+  width: 20px;
+  margin-left: -20px;
+  margin-top: 6px; // vertically align radio button with text
+  padding: 0;
+  -webkit-appearance: radio;
+}
+
+textarea#output {
+  resize: none;
+  font-size: 0.8em;
+}
+
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0.4rem;
+  }
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 0.4rem;
+  }
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+/* Large and up */
+@media screen and (min-width: 64em) {
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+}
