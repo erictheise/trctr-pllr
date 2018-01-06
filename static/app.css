@@ -1,20 +1,19 @@
-.vertical-radio-buttons div {
+.vertical-radio-buttons ~ div, .vertical-checkboxes ~ div {
   display: block;
   padding: 0 0 5px 5px;
   clear: both;
 }
-.vertical-radio-buttons span {
+.vertical-radio-buttons ~ span, .vertical-checkboxes ~ span {
   display: block;
   padding-left: 20px;
   cursor: inherit;
 }
-.vertical-radio-buttons input {
+.vertical-radio-buttons ~ input, .vertical-checkboxes ~ input {
   float: left;
   width: 20px;
   margin-left: -20px;
-  margin-top: 6px; // vertically align radio button with text
+  margin-top: 6px; // vertically align widget with text
   padding: 0;
-  -webkit-appearance: radio;
 }
 
 textarea#output {

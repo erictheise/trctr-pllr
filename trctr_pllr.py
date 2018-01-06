@@ -10,14 +10,13 @@ from numpy import random
 import json
 
 app = Flask(__name__)
-APP_ROOT = os.path.join(os.path.dirname(__file__), '..')   # refers to application_top
+APP_ROOT = os.path.join(os.path.dirname(__file__))   # refers to application_top
 dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
 connection_string = 'postgresql+psycopg2://%s:%s@%s/%s' % (os.getenv('DBUSER'), os.getenv('DBPASS'), os.getenv('DBHOST'), os.getenv('DBNAME'))
 app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
 db = SQLAlchemy(app)
 db.init_app(app)
-
 
 class TractDistribution(db.Model):
     geoid = db.Column(db.String(11), primary_key=True)
@@ -39,11 +38,32 @@ def generate_tracts():
     parser = reqparse.RequestParser()
     parser.add_argument('observations', type=int, location='args', required=True, help='Observations must be a positive integer!')
     parser.add_argument('format', type=str, location='args', required=True, help="Format must be one of: geojson, csv, or tsv.")
+    parser.add_argument('geoid', type=bool, location='args',)
+    parser.add_argument('usps', type=bool, location='args',)
+    parser.add_argument('pop10', type=bool, location='args',)
+    parser.add_argument('customPropertyName', type=str, location='args',)
+    parser.add_argument('customPropertyNumber', type=int, location='args',)
+    for i in range(0,5):
+        parser.add_argument('value-' + str(i), type=str, location='args',)
+        parser.add_argument('weight-' + str(i), type=float, location='args',)
     args = parser.parse_args()
 
     # Map the total population to the max value of the sampling range.
     max = db.session.query(func.max(TractDistribution.cumulative)).scalar()
     if args['observations'] > 0:
+
+        # Create an array of cumulative weights. This is used to map `random.random_sample` values to customer properties.
+        if args['customPropertyName'] and args['customPropertyNumber'] > 1:
+            acc = 0.0
+            valueSelector = []
+            for j in range(args['customPropertyNumber']):
+                if args['weight-' + str(j)] > 0:
+                    acc += args['weight-' + str(j)]
+                    valueSelector.append(acc)
+            for j in range(args['customPropertyNumber']):
+                if args['weight-' + str(j)] > 0:
+                    valueSelector[j] /= acc
+
         feature_collection = {
             "type": "FeatureCollection",
             "features": []
@@ -51,10 +71,12 @@ def generate_tracts():
         for i in range(args["observations"]):
             # Sample one tract for each requested feature and generate a random point within the tract. This uses the
             # brute force function in `postgis_functions/random_point.sql` to generate a point within the bounding box,
-            # then validate that it's within the multipolygon expressing the boundaries of the tract.
+            # validate that it's within the multipolygon expressing the boundaries of the tract, and generate another
+            # if it's not.
             #
-            # Because this can occasionally fail, this process is wrapped in the python equivalent of `repeat...until`.
-            # An Exception here will rollback the PostgreSQL transaction and resample.
+            # Because this can still on occasion strike out, this process is wrapped in the python equivalent of
+            # `repeat...until`. An Exception here will rollback the PostgreSQL transaction, resample a tract, and
+            # start over.
             while True:
                 try:
                     sample = random.randint(0, max)
@@ -69,10 +91,24 @@ def generate_tracts():
                 "type": "Feature",
                 "geometry": json.loads(db.session.scalar(func.ST_AsGeoJSON(feature_geom))),
                 "properties": {
-                    "geoid": tract.geoid,
-                    "usps": tract.usps,
                 },
             }
+
+            if args['geoid']:
+                feature['properties']['geoid'] = tract.geoid
+            if args['usps']:
+                feature['properties']['usps'] = tract.usps
+            if args['pop10']:
+                feature['properties']['pop10'] = tract.pop10
+
+            if args['customPropertyName'] and args['customPropertyNumber'] > 1:
+                random_value = random.random_sample()
+                for j in range(args['customPropertyNumber']):
+                    if args['value-' + str(j)] and args['weight-' + str(j)] > 0:
+                        if random_value < valueSelector[j]:
+                            feature['properties'][args['customPropertyName']] = args['value-' + str(j)]
+                            break
+
             feature_collection["features"].append(feature)
 
     return json.dumps(feature_collection)

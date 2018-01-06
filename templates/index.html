@@ -15,41 +15,54 @@
     <div class="vertical-radio-buttons">
       <fieldset class="fieldset">
         <legend>Output format</legend>
-          <div>
-            <span>
-              <input type="radio" name="format" value="geojson" id="geojson" required checked>
-              <label for="geojson">GeoJSON</label>
-            </span>
-          </div>
-          <div>
-            <span>
-              <input type="radio" name="format" value="csv" id="csv" disabled required>
-              <label for="csv">Comma delimited</label>
-            </span>
-          </div>
-          <div>
-            <span>
-              <input type="radio" name="format" value="tsv" id="tsv" disabled required>
-              <label for="tsv">Tab delimited</label>
-            </span>
-          </div>
+        <div>
+          <span>
+            <input type="radio" name="format" value="geojson" id="geojson" required checked>
+            <label for="geojson">GeoJSON</label>
+          </span>
+        </div>
+        <div>
+          <span>
+            <input type="radio" name="format" value="csv" id="csv" disabled required>
+            <label for="csv">Comma delimited</label>
+          </span>
+        </div>
+        <div>
+          <span>
+            <input type="radio" name="format" value="tsv" id="tsv" disabled required>
+            <label for="tsv">Tab delimited</label>
+          </span>
+        </div>
       </fieldset>
     </div>
-
+    <button id="generate" class="hollow button float-center" type="submit">Generate features</button>
   </div>
 
   <div class="small-12 medium-4 cell">
     <fieldset class="fieldset">
       <legend>Properties</legend>
-      <p>
-       Leggings 3 wolf moon unicorn cliche cronut kombucha pitchfork mlkshk shabby chic selfies. Yr vaporware meggings migas bitters succulents occupy microdosing selfies chicharrones.
-      </p>
-      <p>
-        Umami YOLO pitchfork tbh sartorial. Everyday carry try-hard four loko, blue bottle chartreuse meggings kombucha tumblr fingerstache food truck sriracha fashion axe sartorial. Stumptown kickstarter bitters, Unicorn snackwave tbh polaroid iPhone bitters. Gastropub intelligentsia thundercats pabst, vinyl mlkshk cornhole paleo kickstarter deep v literally jean shorts.
-      </p>
-    </fieldset>
+      <div id="propertyPanel">
+        <p>
+          The <a href="https://www.census.gov/geo/maps-data/data/gazetteer2010.html">2010 National Census Tracts Gazetteer File</a> includes the properties <b>geoid</b>, <b>usps</b> (state or territory), and <b>pop10</b> (tract population). They're helpful and, by default, they're included in your output.
+        </p>
+        <p class="float-center">
+          <input type="checkbox" name="geoid" id="geoid" required checked>
+          <label for="geoid">geoid</label>
+          <input type="checkbox" name="usps" id="usps" required checked>
+          <label for="usps">usps</label>
+          <input type="checkbox" name="pop10" id="pop10" required checked>
+          <label for="pop10">pop10</label>
+        </p>
+        <p>
+          You can add one custom property whose values will be drawn from a uniform distribution.
+        </p>
 
-    <button id="generate" class="hollow button float-center" type="submit">Generate</button>
+        <p id="customProperty">
+          <button id="addFeature" class="hollow small button float-center" type="submit">Yes, please</button>
+        </p>
+      </div>
+    </fieldset>
+    
   </div>
 
   <div class="small-12 medium-5 cell">
@@ -72,6 +85,10 @@
       ;
     outputHeight = windowHeight - topBarHeight - 1.5 * cellHeight - fieldsetHeight;
     $('#output').height(outputHeight);
+    $('#addFeature').on('click', function (e) {
+      e.preventDefault();
+      $('#customProperty').empty().append($('#customPropertyPanel'));
+    });
     $('#generate').on('click', function (e) {
       e.preventDefault();
       $('#output').empty();
@@ -79,7 +96,39 @@
       $.get(url, function (data) {
         $('#output').append(JSON.stringify(JSON.parse(data), undefined, 4));
       })
+    });
+    $('#customPropertyNumberOfValues').on('change', function () {
+      console.log($('#customPropertyNumberOfValues').val());
+      for (var i=0; i<$('#customPropertyNumberOfValues').val(); i++) {
+        console.log(i);
+        $('#customPropertiesPanel').append('\
+          <div class="small-7 cell"> \
+            <input type="text" name="value-' + i + '" id="value-' + i + ' placeholder="Value"> \
+          </div> \
+          <div class="small-5 cell"> \
+            <input type="number" min="0.0" max="1.0" step="0.01" name="weight-' + i + '" id="value-' + i + ' placeholder="Weight"> \
+          </div>'
+        )
+      }
+
     })
   })
 </script>
+
+<div id="customPropertyPanel">
+  <fieldset class="fieldset">
+    <legend>Custom Property</legend>
+    <label for="customPropertyName">Property Name</label>
+    <input type="text" id="customPropertyName" name="customPropertyName" placeholder="Property Name" required>
+    <label for="customPropertyNumberOfValues">Number of Values</label>
+    <select id="customPropertyNumberOfValues" name="customPropertyNumber">
+      <option>Select a number</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+    <div id="customPropertiesPanel" class="grid-x grid-padding-x"></div>
+  </fieldset>
+</div>
 {% endblock %}
