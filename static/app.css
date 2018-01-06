@@ -21,6 +21,11 @@ textarea#output {
   font-size: 0.8em;
 }
 
+.logotype{
+  font-family: 'Averia Sans Libre', cursive;
+  font-size: 2.2em;
+}
+
 /* Small only */
 @media screen and (max-width: 39.9375em) {
   h1 {

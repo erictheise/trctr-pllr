@@ -54,7 +54,7 @@
           <label for="pop10">pop10</label>
         </p>
         <p>
-          You can add one custom property whose values will be drawn from a uniform distribution.
+          You can add one custom property and specify weights for its distribution.
         </p>
 
         <p id="customProperty">
@@ -87,7 +87,7 @@
     $('#output').height(outputHeight);
     $('#addFeature').on('click', function (e) {
       e.preventDefault();
-      $('#customProperty').empty().append($('#customPropertyPanel'));
+      $('#customProperty').empty().append($('#customPropertyPanel').toggle());
     });
     $('#generate').on('click', function (e) {
       e.preventDefault();
@@ -98,15 +98,13 @@
       })
     });
     $('#customPropertyNumberOfValues').on('change', function () {
-      console.log($('#customPropertyNumberOfValues').val());
       for (var i=0; i<$('#customPropertyNumberOfValues').val(); i++) {
-        console.log(i);
         $('#customPropertiesPanel').append('\
           <div class="small-7 cell"> \
-            <input type="text" name="value-' + i + '" id="value-' + i + ' placeholder="Value"> \
+            <input type="text" name="value-' + i + '" id="value-' + i + '" placeholder="Value"> \
           </div> \
           <div class="small-5 cell"> \
-            <input type="number" min="0.0" max="1.0" step="0.01" name="weight-' + i + '" id="value-' + i + ' placeholder="Weight"> \
+            <input type="number" min="0.0" max="1.0" step="0.01" name="weight-' + i + '" id="value-' + i + '" placeholder="Weight"> \
           </div>'
         )
       }
@@ -115,7 +113,7 @@
   })
 </script>
 
-<div id="customPropertyPanel">
+<div id="customPropertyPanel" style="display:none;">
   <fieldset class="fieldset">
     <legend>Custom Property</legend>
     <label for="customPropertyName">Property Name</label>

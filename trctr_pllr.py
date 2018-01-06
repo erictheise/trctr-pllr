@@ -52,7 +52,7 @@ def generate_tracts():
     max = db.session.query(func.max(TractDistribution.cumulative)).scalar()
     if args['observations'] > 0:
 
-        # Create an array of cumulative weights. This is used to map `random.random_sample` values to customer properties.
+        # Create an array of cumulative weights. This is used to map `random.random_sample` values to custom properties.
         if args['customPropertyName'] and args['customPropertyNumber'] > 1:
             acc = 0.0
             valueSelector = []
@@ -68,6 +68,7 @@ def generate_tracts():
             "type": "FeatureCollection",
             "features": []
         }
+
         for i in range(args["observations"]):
             # Sample one tract for each requested feature and generate a random point within the tract. This uses the
             # brute force function in `postgis_functions/random_point.sql` to generate a point within the bounding box,
