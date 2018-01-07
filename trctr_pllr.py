@@ -13,8 +13,7 @@ app = Flask(__name__)
 APP_ROOT = os.path.join(os.path.dirname(__file__))   # refers to application_top
 dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
-connection_string = 'postgresql+psycopg2://%s:%s@%s/%s' % (os.getenv('DBUSER'), os.getenv('DBPASS'), os.getenv('DBHOST'), os.getenv('DBNAME'))
-app.config['SQLALCHEMY_DATABASE_URI'] = connection_string
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = SQLAlchemy(app)
 db.init_app(app)
 
