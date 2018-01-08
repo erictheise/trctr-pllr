@@ -1,3 +1,7 @@
+# TRCTR-PLLR
+
+TRCTR-PLLR generates random location data that reflects demographic data from the 2010 US Census. It's a faker. _Fake_ has become an overused and untrustworthy word based on data
+
 https://www.census.gov/geo/maps-data/data/gazetteer2010.html
 
 CREATE TABLE gaz_tracts (
