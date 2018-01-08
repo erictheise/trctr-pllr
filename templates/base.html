@@ -2,6 +2,28 @@
 <html class="no-js" lang="en" dir="ltr">
 {% include 'head.html' %}
   <body>
+    <div class="reveal" id="about-trctr-pllr" data-reveal>
+      <h1>About TRCTR-PLLR</h1>
+      <p>
+        I needed a way to randomly sample location data that mirrored population distribution in the United States. My particular need was to study visual changes in my maps as they collected 100, 1,000, 10,000, or 100,000 points and to alter their style accordingly. The underlying idea could also be used in factories for unit tests, or for creating simulation models based on United States locations.
+      </p>
+      <p>
+        Is it necessary to point out that this is a simple visual design tool? Census tracts are chosen randomly based on population data, points are generated simply with the requirement that they fit within the boundaries of the tract. TRCTR-PLLR has no awareness of cultural or physical features within a tract that would determine or explain where people genuinely live.
+      </p>
+      <p>
+        This hosted instance may disappear at any time and so you should set up your own copy. The source code is available at <a href="https://github.com/erictheise/trctr-pllr">the project's GitHub repository</a> and there's a <a href="http://erictheise.com/blog/">lengthy blog post about the project</a> explaining the motivation. And its name.
+      </p>
+      <p>
+        I hope you find it useful in the work you do.
+      </p>
+      <p>
+        <cite class="float-right"><a href="http://erictheise.com/">Eric Theise</a></cite>
+      </p>
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
     <div class="off-canvas-wrapper">
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
 
@@ -17,7 +39,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <ul class="vertical menu">
-            <li><a href="#">About</a></li>
+            <li><a href="#" data-open="about-trctr-pllr">About</a></li>
           </ul>
         </div>
 
@@ -29,7 +51,7 @@
                 <div class="top-bar-left logotype">TRCTR-PLLR</div>
                 <div class="top-bar-right">
                   <ul class="dropdown menu" data-dropdown-menu>
-                    <li><a href="#">About</a></li>
+                    <li><a href="#" data-open="about-trctr-pllr">About</a></li>
                   </ul>
                 </div>
               </div>
@@ -51,5 +73,9 @@
     </div>
 {% include 'foot.html' %}
 {% include 'ga.html' %}
+
+
+
   </body>
 </html>
+
