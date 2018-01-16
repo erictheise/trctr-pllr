@@ -64,8 +64,8 @@ The web interface prepares a call to the application's simple API. You can `GET`
 * `pop10`: optional. `on` to include Census Bureau Tract population in output.
 * `customPropertyName`: optional. URL-encoded string. Requires subsequent fields.
 * `customPropertyNumber`: optional. Integer. Number of values the custom property may take.
-* `value-i`: optional. URL-encoded string. i ∈ {0, ..., customPropertyNumber - 1}. Custom property value to be surfaced in the output.
-* `weight-i`: optional. Strictly positive number. i ∈ {0, ..., customPropertyNumber - 1}. Proportion of the time the corresponding custom property value will be surfaced in the output.
+* `value-i`: optional. URL-encoded string. i ∈ [0, customPropertyNumber). Custom property value to be surfaced in the output.
+* `weight-i`: optional. Strictly positive number. i ∈ [0, customPropertyNumber). Proportion of the time the corresponding custom property value will be surfaced in the output.
 
 The API call for the Web interface example shown above is:
 
