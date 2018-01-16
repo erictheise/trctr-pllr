@@ -11,7 +11,7 @@ _TRCTR-PLLR_ uses population data from the 2010 Census and Tract boundary data f
 
 _TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR_PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
 
-
+<!-- not ready for prime time
 ## Prerequisites
 
 I assume you have basic familiarity with the command line, with GitHub, and have a preferred package manager for your platform (e.g. [homebrew](https://brew.sh) for OS X). You'll need [PostgreSQL](https://www.postgresql.org/) with [PostGIS extensions](http://postgis.org/), but if you're doing geo work, you almost certainly already have these. You'll need Python 3 and you'll want a virtual environment manager such as [virtualenv](https://virtualenv.pypa.io/en/stable/) or [venv](https://docs.python.org/3/library/venv.html). Everything else is installed via `pip`.
@@ -43,10 +43,11 @@ I assume you have basic familiarity with the command line, with GitHub, and have
   ```
   FLASK_APP=trctr_pllr.py flask run
   ```
+-->
 
 ## Hosted version
 
-A [hosted version of the application](https://trctr-pllr.herokuapp.com/) is presently available at heroku but may be taken down at any time.
+A [hosted version of the application](https://trctr-pllr.herokuapp.com/) is presently available at heroku.
 
 ## Usage
 
@@ -82,4 +83,4 @@ https://trctr-pllr.herokuapp.com/tracts?observations=100&format=geojson&geoid=on
 
 ## Your feedback
 
-This little app works well enough for my purposes. I'm open to feedback, issue creation, pull requests, but I apologize in advance as this is a low priority project for me.
+This little app works well enough for my purposes. I'm open to feedback, issue creation, pull requests, but I apologize in advance for slow action as this is a low priority project for me.
