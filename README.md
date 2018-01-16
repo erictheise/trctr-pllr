@@ -9,7 +9,7 @@ For each requested observation, _TRCTR_PLLR_ randomly selects a Census Tract usi
 
 _TRCTR-PLLR_ uses population data from the 2010 Census and Tract boundary data from 2017.
 
-_TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR_PLLR_ to prototype maps and used values of the additional property to set the fill color: how does a 3 color, 6 color, 12 color map render with 100 points, 1000 points, 10,000 points?
+_TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR_PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
 
 
 ## Prerequisites
@@ -27,15 +27,22 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 
 * create a database.
 
-  `CREATE DATABASE `
+  ```
+  CREATE DATABASE census_tract_2017;
+  CREATE EXTENSION postgis;
+  ```
 
 * load the data.
 
+  ```
+  bunzip2 data/trctr-pllr.sql.bz2
+  psql -f data/trctr-pllr.sql census_tract_2017
+  ```
 * start the application.
 
-```
-FLASK_APP=trctr_pllr.py flask run
-```
+  ```
+  FLASK_APP=trctr_pllr.py flask run
+  ```
 
 ## Hosted version
 
@@ -72,3 +79,7 @@ The API call for the Web interface example shown above is:
 ```
 https://trctr-pllr.herokuapp.com/tracts?observations=100&format=geojson&geoid=on&pop10=on&customPropertyName=color%20brewer%20dark2&customPropertyNumber=5&value-0=%231b9e77&weight-0=1&value-1=%23d95f02&weight-1=2&value-2=%237570b3&weight-2=3&value-3=%23e7298a&weight-3=5&value-4=%2366a61e&weight-4=8
 ```
+
+## Your feedback
+
+This little app works well enough for my purposes. I'm open to feedback, issue creation, pull requests, but I apologize in advance as this is a low priority project for me.
