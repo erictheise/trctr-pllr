@@ -7,6 +7,8 @@ from sqlalchemy_utils import IntRangeType
 from geoalchemy2 import Geometry
 from flask_restful import reqparse
 from numpy import random
+from lib.to_geojson import array_to_geojson
+from lib.array_to_delimited_values import array_to_delimited_values
 import json
 
 app = Flask(__name__)
@@ -42,9 +44,11 @@ def generate_tracts():
     parser.add_argument('pop10', type=bool, location='args',)
     parser.add_argument('customPropertyName', type=str, location='args',)
     parser.add_argument('customPropertyNumber', type=int, location='args',)
-    for i in range(0,5):
-        parser.add_argument('value-' + str(i), type=str, location='args',)
-        parser.add_argument('weight-' + str(i), type=float, location='args',)
+    args = parser.parse_args()
+    if args['customPropertyName'] and args['customPropertyNumber'] > 1:
+        for i in range(0,args['customPropertyNumber']):
+            parser.add_argument('value-' + str(i), type=str, location='args',)
+            parser.add_argument('weight-' + str(i), type=float, location='args',)
     args = parser.parse_args()
 
     # Map the total population to the max value of the sampling range.
@@ -63,10 +67,23 @@ def generate_tracts():
                 if args['weight-' + str(j)] > 0:
                     valueSelector[j] /= acc
 
-        feature_collection = {
-            "type": "FeatureCollection",
-            "features": []
-        }
+        # Create `feature_array`. Its row 0 is a 'header' row.
+        feature_array = []
+        row = []
+        if args['geoid']:
+            row.append('geoid')
+        if args['usps']:
+            row.append('usps')
+        if args['pop10']:
+            row.append('pop10')
+        if args['customPropertyName'] and args['customPropertyNumber'] >= 2:
+            row.append(args['customPropertyName'])
+        if args['format'] == 'geojson':
+            row.append('geometry')
+        else:
+            row.append('lon')
+            row.append('lat')
+        feature_array.append(row)
 
         for i in range(args["observations"]):
             # Sample one tract for each requested feature and generate a random point within the tract. This uses the
@@ -87,28 +104,33 @@ def generate_tracts():
                     print(Exception)
                     db.session.rollback()
 
-            feature = {
-                "type": "Feature",
-                "geometry": json.loads(db.session.scalar(func.ST_AsGeoJSON(feature_geom))),
-                "properties": {
-                },
-            }
-
+            row = []
             if args['geoid']:
-                feature['properties']['geoid'] = tract.geoid
+                row.append(tract.geoid)
             if args['usps']:
-                feature['properties']['usps'] = tract.usps
+                row.append(tract.usps)
             if args['pop10']:
-                feature['properties']['pop10'] = tract.pop10
-
-            if args['customPropertyName'] and args['customPropertyNumber'] > 1:
+                row.append(tract.pop10)
+            if args['customPropertyName'] and args['customPropertyNumber'] >= 2:
                 random_value = random.random_sample()
                 for j in range(args['customPropertyNumber']):
                     if args['value-' + str(j)] and args['weight-' + str(j)] > 0:
                         if random_value < valueSelector[j]:
-                            feature['properties'][args['customPropertyName']] = args['value-' + str(j)]
+                            row.append(args['value-' + str(j)])
                             break
+            if args['format'] == 'geojson':
+                row.append(json.loads(db.session.scalar(func.ST_AsGeoJSON(feature_geom))))
+            else:
+                row.append(db.session.scalar(func.ST_X(feature_geom)))
+                row.append(db.session.scalar(func.ST_Y(feature_geom)))
 
-            feature_collection["features"].append(feature)
+            feature_array.append(row)
 
-    return json.dumps(feature_collection)
+        if args['format'] == 'geojson':
+            output = array_to_geojson(feature_array)
+        elif args['format'] == 'csv':
+            output = array_to_delimited_values(feature_array, ',')
+        else:
+            output = array_to_delimited_values(feature_array, '\t')
+
+    return output

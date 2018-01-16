@@ -23,13 +23,13 @@
         </div>
         <div>
           <span>
-            <input type="radio" name="format" value="csv" id="csv" disabled required>
+            <input type="radio" name="format" value="csv" id="csv" required>
             <label for="csv">Comma delimited</label>
           </span>
         </div>
         <div>
           <span>
-            <input type="radio" name="format" value="tsv" id="tsv" disabled required>
+            <input type="radio" name="format" value="tsv" id="tsv" required>
             <label for="tsv">Tab delimited</label>
           </span>
         </div>
@@ -94,10 +94,15 @@
       $('#output').empty();
       var url = '/tracts?' + $('form').serialize();
       $.get(url, function (data) {
-        $('#output').append(JSON.stringify(JSON.parse(data), undefined, 4));
+        if ($('#geojson').is(':checked')) {
+          $('#output').append(JSON.stringify(JSON.parse(data), undefined, 4));
+        } else {
+          $('#output').append(data);
+        }
       })
     });
     $('#customPropertyNumberOfValues').on('change', function () {
+      $('#customPropertiesPanel').empty();
       for (var i=0; i<$('#customPropertyNumberOfValues').val(); i++) {
         $('#customPropertiesPanel').append('\
           <div class="small-7 cell"> \
@@ -119,13 +124,7 @@
     <label for="customPropertyName">Property Name</label>
     <input type="text" id="customPropertyName" name="customPropertyName" placeholder="Property Name" required>
     <label for="customPropertyNumberOfValues">Number of Values</label>
-    <select id="customPropertyNumberOfValues" name="customPropertyNumber">
-      <option>Select a number</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
+    <input type="number" min="1" id="customPropertyNumberOfValues" name="customPropertyNumber">
     <div id="customPropertiesPanel" class="grid-x grid-padding-x"></div>
   </fieldset>
 </div>
