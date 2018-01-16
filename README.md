@@ -58,8 +58,17 @@ A [hosted version of the application](https://trctr-pllr.herokuapp.com/) is pres
 The web interface prepares a call to the application's simple API. You can `GET` from it directly at `/tracts`. The parameters are:
 
 * `observations`: required. Integer.
+* `format`: required. One of `geojson`, `csv`, `tsv`.
 * `geoid`: optional. `on` to include Census Bureau Tract identifier in output.
 * `usps`: optional. `on` to include two letter state or territory identifier in output.
 * `pop10`: optional. `on` to include Census Bureau Tract population in output.
-* `format`: required. One of `geojson`, `csv`, `tsv`.
-* 
+* `customPropertyName`: optional. URL-encoded string. Requires subsequent fields.
+* `customPropertyNumber`: optional. Integer. Number of values the custom property may take.
+* `value-i`: optional. URL-encoded string. i ∈ {0, ..., customPropertyNumber - 1}. Custom property value to be surfaced in the output.
+* `weight-i`: optional. Strictly positive number. i ∈ {0, ..., customPropertyNumber - 1}. Proportion of the time the corresponding custom property value will be surfaced in the output.
+
+The API call for the Web interface example shown above is:
+
+```
+https://trctr-pllr.herokuapp.com/tracts?observations=100&format=geojson&geoid=on&pop10=on&customPropertyName=color%20brewer%20dark2&customPropertyNumber=5&value-0=%231b9e77&weight-0=1&value-1=%23d95f02&weight-1=2&value-2=%237570b3&weight-2=3&value-3=%23e7298a&weight-3=5&value-4=%2366a61e&weight-4=8
+```
