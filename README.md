@@ -51,7 +51,7 @@ A [hosted version of the application](https://trctr-pllr.herokuapp.com/) is pres
 * click the __Generate features__ button.
 * if you like the looks of the generated data, copy and paste the contents of the __Output__ window into your own file.
 
-![Web interface example](https://raw.githubusercontent.com/erictheise/trctr-pllr/master/images/web-interface-example.png)
+![Web interface example](https://github.com/erictheise/trctr-pllr/blob/master/images/web-interface-example.png)
 
 ### API
 
