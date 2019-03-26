@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 from sqlalchemy_utils import IntRangeType
 from geoalchemy2 import Geometry
+from geoalchemy2.functions import GenericFunction
 from flask_restful import reqparse
 from numpy import random
 from lib.to_geojson import array_to_geojson
@@ -12,6 +13,7 @@ from lib.array_to_delimited_values import array_to_delimited_values
 import json
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP_ROOT = os.path.join(os.path.dirname(__file__))   # refers to application_top
 dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
@@ -29,6 +31,12 @@ class TractDistribution(db.Model):
 
     def __str__(self):
         return 'geoid: %s usps: %s population: %s' % (self.geoid, self.usps, self.pop10)
+
+
+class RandomPoint(GenericFunction):
+    name = 'RandomPoint'
+    type = Geometry
+
 
 @app.route('/')
 def index():
@@ -119,7 +127,7 @@ def generate_tracts():
                             row.append(args['value-' + str(j)])
                             break
             if args['format'] == 'geojson':
-                row.append(json.loads(db.session.scalar(func.ST_AsGeoJSON(feature_geom))))
+                row.append(json.loads(db.session.scalar(func.ST_AsGeoJSON(feature_geom, 6))))
             else:
                 row.append(db.session.scalar(func.ST_X(feature_geom)))
                 row.append(db.session.scalar(func.ST_Y(feature_geom)))
