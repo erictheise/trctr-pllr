@@ -5,11 +5,11 @@ _TRCTR-PLLR_ is a _faker_ for United States location data. It's useful when you 
 
 ## How it works
 
-For each requested observation, _TRCTR_PLLR_ randomly selects a Census Tract using population-based weights. It then generates a location based on the bounding box of the Tract and tests to see if that point is contained by the Tract's actual boundaries. If not, it will generate and test up to 999 more locations. In the atypical case that none of the 1,000 generated points are contained in that Tract, it will randomly select a different Tract. This does introduce a bias that would be dubious in a tool that required statistical validity, but this is merely a _faker_.
+For each requested observation, _TRCTR-PLLR_ randomly selects a Census Tract using population-based weights. It then generates a location based on the bounding box of the Tract and tests to see if that point is contained by the Tract's actual boundaries. If not, it will generate and test up to 999 more locations. In the atypical case that none of the 1,000 generated points are contained in that Tract, it will randomly select a different Tract. This does introduce a bias that would be dubious in a tool that required statistical validity, but this is merely a _faker_.
 
-_TRCTR-PLLR_ uses population data from the 2010 Census and Tract boundary data from 2017.
+_TRCTR-PLLR_ uses population data from the 2010 Census and Tract boundary data from 2018.
 
-_TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR_PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
+_TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR-PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
 
 <!-- not ready for prime time
 ## Prerequisites
