@@ -1,1 +1,1 @@
-web: gunicorn trctr_pllr:app
+web: gunicorn --timeout 120 trctr_pllr:app
