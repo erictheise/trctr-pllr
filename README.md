@@ -26,7 +26,11 @@ I assume you have basic familiarity with the command line, with GitHub, and have
   source path/to/venv/trctr-pllr/bin/activate
   pip install -r requirements.txt
   ```
-
+* copy the provided __.env-example__ to __.env__, fill in your database credentials, make any other needed changes.
+  ```
+  cp .env-example .env
+  ```
+  
 * create a database within __psql__ or as you prefer.
   ```
   CREATE DATABASE census_tract_2018;
