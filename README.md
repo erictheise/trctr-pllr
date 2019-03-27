@@ -9,26 +9,27 @@ For each requested observation, _TRCTR-PLLR_ randomly selects a Census Tract usi
 
 _TRCTR-PLLR_ uses population data from the 2010 Census and Tract boundary data from 2018.
 
-_TRCTR-PLLR_ returns the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR-PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
+_TRCTR-PLLR_ can return the Tract's `geoip`, `usps`, and `pop10` from the original Census data and allows you to specify one additional property. I developed _TRCTR-PLLR_ to prototype maps and used values of the additional property to set the fill color: how do 3 color, 6 color, 12 color maps render with 100 points, 1000 points, 10,000 points?
 
-<!-- not ready for prime time
+
 ## Prerequisites
 
-I assume you have basic familiarity with the command line, with GitHub, and have a preferred package manager for your platform (e.g. [homebrew](https://brew.sh) for OS X). You'll need [PostgreSQL](https://www.postgresql.org/) with [PostGIS extensions](http://postgis.org/), but if you're doing geo work, you almost certainly already have these. You'll need Python 3 and you'll want a virtual environment manager such as [virtualenv](https://virtualenv.pypa.io/en/stable/) or [venv](https://docs.python.org/3/library/venv.html). Everything else is installed via `pip`.
+I assume you have basic familiarity with the command line, with GitHub, and have a preferred package manager for your platform (e.g. [homebrew](https://brew.sh) for OS X). You'll need [PostgreSQL](https://www.postgresql.org/) with [PostGIS extensions](http://postgis.org/), but if you're doing geo work, you almost certainly already have these. You'll need Python 3 and you'll want a virtual environment manager such as [venv](https://docs.python.org/3/library/venv.html). Everything else is installed via `pip`.
 
 
 ## Installation
 
-* `git clone` this repository or install a [release](https://github.com/erictheise/trctr-pllr/releases).
-* create a virtual environment.
-* install the required libraries.
-
-  `pip install -r requirements.txt`
-
-* create a database.
-
+* download a [release](https://github.com/erictheise/trctr-pllr/releases).
+* create a virtual environment and install the required libraries.
   ```
-  CREATE DATABASE census_tract_2017;
+  python3 -m venvs path/to/venv/trctr-pllr
+  source path/to/venv/trctr-pllr/bin/activate
+  pip install -r requirements.txt`
+  ```
+
+* create a database within __psql__ or as you prefer.
+  ```
+  CREATE DATABASE census_tract_2018;
   CREATE EXTENSION postgis;
   ```
 
@@ -36,14 +37,14 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 
   ```
   bunzip2 data/trctr-pllr.sql.bz2
-  psql -f data/trctr-pllr.sql census_tract_2017
+  psql -f data/trctr-pllr.sql census_tract_2018
   ```
 * start the application.
 
   ```
-  FLASK_APP=trctr_pllr.py flask run
+  honcho start
   ```
--->
+
 
 ## Hosted version
 
@@ -83,4 +84,4 @@ https://trctr-pllr.herokuapp.com/tracts?observations=100&format=geojson&geoid=on
 
 ## Your feedback
 
-This little app works well enough for my purposes. I'm open to feedback, issue creation, pull requests, but I apologize in advance for slow action as this is a low priority project for me.
+This little app works well enough for my purposes. I'm open to feedback, issue creation, pull requests. Thanks for your interest.
