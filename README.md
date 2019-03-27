@@ -19,10 +19,15 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 
 ## Installation
 
-* download a [release](https://github.com/erictheise/trctr-pllr/releases).
+* download __trctr_pllr.sql.bz2__ and one of the source code archives from the [release page](https://github.com/erictheise/trctr-pllr/releases).
+* expand the source code.
+  ```
+  tar -zxvf trctr_pllr-1.0.0.tar.gz
+  ```
+  
 * create a virtual environment and install the required libraries.
   ```
-  python3 -m venvs path/to/venv/trctr-pllr
+  python3 -m venv path/to/venv/trctr-pllr
   source path/to/venv/trctr-pllr/bin/activate
   pip install -r requirements.txt
   ```
@@ -34,8 +39,6 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 * create a database within __psql__ or as you prefer.
   ```
   CREATE DATABASE census_tract_2018;
-  \c census_tract_2018
-  CREATE EXTENSION postgis;
   ```
 
 * load the data.
@@ -49,7 +52,8 @@ I assume you have basic familiarity with the command line, with GitHub, and have
   ```
   honcho start
   ```
-* deactivate the virtual environment when you're done.
+* open your browser on __http://localhost:5000__ and fake it.
+* when you're done, __control-c__ the app and don't forget to deactivate the virtual environment.
   ```
   deactivate
   ```
