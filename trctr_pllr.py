@@ -25,7 +25,6 @@ class TractDistribution(db.Model):
     geoid = db.Column(db.String(11), primary_key=True)
     usps = db.Column(db.String(2))
     pop10 = db.Column(db.Integer)
-    cumulative = db.Column(db.BigInteger)
     weight = db.Column(IntRangeType)
     wkb_geometry = db.Column(Geometry('MultiPolygon'))
 
@@ -60,7 +59,7 @@ def generate_tracts():
     args = parser.parse_args()
 
     # Map the total population to the max value of the sampling range.
-    max = db.session.query(func.max(TractDistribution.cumulative)).scalar()
+    max = db.session.query(func.max(func.upper(TractDistribution.weight))).scalar()
     if args['observations'] > 0:
 
         # Create an array of cumulative weights. This is used to map `random.random_sample` values to custom properties.
