@@ -14,7 +14,7 @@ _TRCTR-PLLR_ can return the Tract's `geoip`, `usps`, and `pop10` from the origin
 
 ## Prerequisites
 
-I assume you have basic familiarity with the command line, with GitHub, and have a preferred package manager for your platform (e.g. [homebrew](https://brew.sh) for OS X). You'll need [PostgreSQL](https://www.postgresql.org/) with [PostGIS extensions](http://postgis.org/), but if you're doing geo work, you almost certainly already have these. You'll need Python 3 and you'll want a virtual environment manager such as [venv](https://docs.python.org/3/library/venv.html). Everything else is installed via `pip`.
+I assume you have basic familiarity with the command line, with GitHub, and have a preferred package manager for your platform (e.g. [homebrew](https://brew.sh) for OS X). You'll need [PostgreSQL](https://www.postgresql.org/) with [PostGIS extensions](http://postgis.org/), but if you're doing geo work, you almost certainly already have these. You'll need Python 3 and you'll want a virtual environment manager such as [__venv__](https://docs.python.org/3/library/venv.html). Everything else is installed via `pip`.
 
 
 ## Installation
@@ -30,6 +30,7 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 * create a database within __psql__ or as you prefer.
   ```
   CREATE DATABASE census_tract_2018;
+  \c census_tract_2018
   CREATE EXTENSION postgis;
   ```
 
