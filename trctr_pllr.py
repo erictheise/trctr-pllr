@@ -22,11 +22,12 @@ db = SQLAlchemy(app)
 db.init_app(app)
 
 class TractDistribution(db.Model):
+    __tablename__ = "tract_distribution_spatialite"
     geoid = db.Column(db.String(11), primary_key=True)
     usps = db.Column(db.String(2))
     pop10 = db.Column(db.Integer)
-    cumulative = db.Column(db.BigInteger)
-    weight = db.Column(IntRangeType)
+    start_range = db.Column(db.BigInteger)
+    end_range = db.Column(db.BigInteger)
     wkb_geometry = db.Column(Geometry('MultiPolygon'))
 
     def __str__(self):
@@ -60,7 +61,7 @@ def generate_tracts():
     args = parser.parse_args()
 
     # Map the total population to the max value of the sampling range.
-    max = db.session.query(func.max(TractDistribution.cumulative)).scalar()
+    max = db.session.query(func.max(TractDistribution.end_range)).scalar()
     if args['observations'] > 0:
 
         # Create an array of cumulative weights. This is used to map `random.random_sample` values to custom properties.
@@ -105,7 +106,7 @@ def generate_tracts():
             while True:
                 try:
                     sample = random.randint(0, max)
-                    tract = db.session.query(TractDistribution).filter(TractDistribution.weight.contains(sample)).one()
+                    tract = db.session.query(TractDistribution).filter(TractDistribution.start_range <= sample, TractDistribution.end_range > sample).one()
                     feature_geom = db.session.execute(func.RandomPoint(tract.wkb_geometry)).scalar()
                     break
                 except Exception:
