@@ -24,7 +24,7 @@ I assume you have basic familiarity with the command line, with GitHub, and have
   ```
   python3 -m venvs path/to/venv/trctr-pllr
   source path/to/venv/trctr-pllr/bin/activate
-  pip install -r requirements.txt`
+  pip install -r requirements.txt
   ```
 
 * create a database within __psql__ or as you prefer.
@@ -44,7 +44,11 @@ I assume you have basic familiarity with the command line, with GitHub, and have
   ```
   honcho start
   ```
-
+* deactivate the virtual environment when you're done.
+  ```
+  deactivate
+  ```
+  
 
 ## Hosted version
 
