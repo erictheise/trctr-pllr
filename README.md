@@ -61,7 +61,7 @@ I assume you have basic familiarity with the command line, with GitHub, and have
 
 ## Hosted version
 
-A [hosted version of the application](https://trctr-pllr.herokuapp.com/) is presently available at heroku.
+A hosted version of the application is no longer available.
 
 ## Usage
 
