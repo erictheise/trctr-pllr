@@ -19,7 +19,7 @@ dotenv_path = os.path.join(APP_ROOT, '.env')
 load_dotenv(dotenv_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = SQLAlchemy(app)
-db.init_app(app)
+# db.init_app(app)
 
 class TractDistribution(db.Model):
     geoid = db.Column(db.String(11), primary_key=True)
